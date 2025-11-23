@@ -1,0 +1,789 @@
+{
+  "name": "phone_inventory",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Durum }}",
+                    "rightValue": "=ALIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "821b01fa-27e2-44ce-a4af-5096bd679b0c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "be637e2d-f5a2-43c8-8fd3-2b43071d2d61",
+                    "leftValue": "={{ $json.Durum }}",
+                    "rightValue": "SATIS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "39a1529b-ef0e-4d4c-b4cc-b280a60feed0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        864,
+        32
+      ],
+      "id": "3bc5baa1-5cae-4a35-80f8-97bef7cec805",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "chatId": "your telegram id",
+        "text": "=İŞLEM = {{ $json.Durum }}\nIMEI = {{ $json.imei }}\nMODEL = {{ $json.Model }}\nFİYAT = {{ $json.Fiyat }}\nİSİM = {{ $json[\"İsim\"] }}\nSOYİSİM = {{ $json.Soyisim }}\nİLETİŞİM = {{ $json[\"İletisim\"] }}\nNOT = {{ $json.NOT }}\nTARİH = {{ $json.Tarih }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        -80
+      ],
+      "id": "34338038-ce25-468c-9e0b-d217bc2eb6f4",
+      "name": "Send a text message",
+      "webhookId": "518df9ee-dbe8-4782-8cc8-675ba5ced6b6",
+      "credentials": {
+        "telegramApi": {
+          "id": "rWrj56RPzphrdeUQ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs",
+          "mode": "list",
+          "cachedResultName": "telefon_kayit",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "buy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "imei": "={{ $json.imei }}",
+            "Tarih": "={{ \n  (() => {\n    const date = new Date($json.submittedAt);\n    const dd = String(date.getDate()).padStart(2, '0');\n    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Aylar 0-indexli\n    const yy = String(date.getFullYear()).slice(-2);\n    const hh = String(date.getHours()).padStart(2, '0');\n    const min = String(date.getMinutes()).padStart(2, '0');\n\n    return `${dd}-${mm}-${yy} - ${hh}:${min}`;\n  })() \n}}\n",
+            "Model": "={{ $json.Model }}",
+            "Fiyat": "={{ $json.Fiyat }}",
+            "Durum": "={{ $json.Durum }}",
+            "İsim": "={{ $json['İsim'] }}",
+            "Soyisim": "={{ $json.Soyisim }}",
+            "T.C. No": "={{ $json['Kimlik No'] }}",
+            "İletisim": "={{ $json['İletişim'] }}",
+            "NOT": "={{ $json.Not }}"
+          },
+          "matchingColumns": [
+            "imei"
+          ],
+          "schema": [
+            {
+              "id": "imei",
+              "displayName": "imei",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fiyat",
+              "displayName": "Fiyat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Durum",
+              "displayName": "Durum",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "İsim",
+              "displayName": "İsim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Soyisim",
+              "displayName": "Soyisim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "T.C. No",
+              "displayName": "T.C. No",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "İletisim",
+              "displayName": "İletisim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "NOT",
+              "displayName": "NOT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tarih",
+              "displayName": "Tarih",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        -80
+      ],
+      "id": "0d269cd7-0588-4e6e-aa46-49ae4df8981f",
+      "name": "buy_list",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nWpEiXHZOYV6Pyxz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs",
+          "mode": "list",
+          "cachedResultName": "telefon_kayit",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1145371570,
+          "mode": "list",
+          "cachedResultName": "sell",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y1pS3ka1kx-SMZ2hpL4RFuU4ZQofktkEpvGM8YOVkJs/edit#gid=1145371570"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "imei": "={{ $json.imei }}",
+            "Model": "={{ $json.Model }}",
+            "Fiyat": "={{ $json.Fiyat }}",
+            "Durum": "={{ $json.Durum }}",
+            "İsim": "={{ $json['İsim'] }}",
+            "Soyisim": "={{ $json.Soyisim }}",
+            "T.C. No": "={{ $json['Kimlik No'] }}",
+            "İletisim": "={{ $json['İletişim'] }}",
+            "NOT": "={{ $json.Not }}",
+            "Tarih": "={{ \n  (() => {\n    const date = new Date($json.submittedAt);\n    const dd = String(date.getDate()).padStart(2, '0');\n    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Aylar 0-indexli\n    const yy = String(date.getFullYear()).slice(-2);\n    const hh = String(date.getHours()).padStart(2, '0');\n    const min = String(date.getMinutes()).padStart(2, '0');\n\n    return `${dd}-${mm}-${yy} - ${hh}:${min}`;\n  })() \n}}\n"
+          },
+          "matchingColumns": [
+            "imei"
+          ],
+          "schema": [
+            {
+              "id": "imei",
+              "displayName": "imei",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Fiyat",
+              "displayName": "Fiyat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Durum",
+              "displayName": "Durum",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "İsim",
+              "displayName": "İsim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Soyisim",
+              "displayName": "Soyisim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "T.C. No",
+              "displayName": "T.C. No",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "İletisim",
+              "displayName": "İletisim",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NOT",
+              "displayName": "NOT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tarih",
+              "displayName": "Tarih",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        96
+      ],
+      "id": "8d3e6208-8120-437e-b91e-9c0e960038e4",
+      "name": "sell_list",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nWpEiXHZOYV6Pyxz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Login",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "User Number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Password",
+              "fieldType": "password",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -256,
+        32
+      ],
+      "id": "aec34b9b-8640-41e9-9d65-2d4192b64b1b",
+      "name": "Login",
+      "webhookId": "b35dae46-b8a8-4ef9-b69e-281f85dffeb6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1a7cd717-cd3c-457f-a3bb-4a24e3a6daef",
+              "leftValue": "={{ $json['User Number'] }}",
+              "rightValue": 12345,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "8f79f1c0-b62c-4b31-aa30-a22fb02b0b4a",
+              "leftValue": "={{ $json.Password }}",
+              "rightValue": "password",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        128
+      ],
+      "id": "c869987e-82ec-440a-93fe-053b9a6b62ae",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "imei",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Model",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Fiyat",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Durum",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "SATIS"
+                  },
+                  {
+                    "option": "ALIS"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "İsim",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Soyisim",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Kimlik No",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "İletişim",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Not"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        80
+      ],
+      "id": "1fe57b4d-e1eb-498c-b65a-2761faf1ba8c",
+      "name": "Form",
+      "webhookId": "a206178a-a73a-4cef-95ef-c18b8a5fe823"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        384
+      ],
+      "id": "6bf9120c-2841-43ff-86d6-da759cdae6ef",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "content": "## Login Form",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "ce1d7939-9890-4bc9-be07-3d878c5bccc2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Product Form\nHere enter the customer and phone information",
+        "height": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        112,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "62a220db-5ae5-488d-8fc3-5dbfc459741e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "##Swich Buy or Sell",
+        "height": 224,
+        "width": 160,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "487c18b3-c200-45de-8596-6236dafa44f4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Here adding all information to google sheets",
+        "height": 576,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "6add3b2f-fd7a-4b0b-888d-c50ac9cf83b3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Every step sending on telegram",
+        "height": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "d3ff4808-1f78-495b-b519-58c407f43186",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        864,
+        320
+      ],
+      "id": "d9280d07-475a-4852-8e14-0b17833a6302",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        304
+      ],
+      "id": "6dbf5afe-6db5-4666-b337-849dbfe97b12",
+      "name": "No Operation, do nothing1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "buy_list",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "sell_list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buy_list": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sell_list": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Login": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Istanbul",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "xfWOLzYjVq6zwP4l"
+  },
+  "versionId": "eeab69bf-5d2b-42f4-8869-01870de1f413",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "152fd0b55026f9b458c4e9d36d8fbb1a0b1db14f1ca1937838c54c9973476bbf"
+  },
+  "id": "VikXr0AyljsZTI2G",
+  "tags": []
+}
