@@ -1,3 +1,7 @@
+![Screenshot](https://github.com/hilmiturksoy/n8n_phone_store_inventory/raw/main/1.png)
+
+https://github.com/hilmiturksoy/n8n_phone_store_inventory/raw/main/1.png
+
 📦 PHONE INVENTORY WORKFLOW — TECHNICAL DOCUMENTATION
 📌 Purpose
 
